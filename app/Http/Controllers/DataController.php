@@ -62,12 +62,17 @@ class DataController extends Controller
         }
 
     }
-    private function deleteData()
-    {
+   private function deleteData()
+  {
+ 
+    if (DB::table('zaznamy_hobby')->count() > 0) {
         DB::table('zaznamy_hobby')->delete();
-        DB::table('zaznamy')->delete();
-
+        
     }
+    if (DB::table('zaznamy')->count() > 0) {
+        DB::table('zaznamy')->delete();
+    }
+  }
     private function getUsageCount()
     {
 

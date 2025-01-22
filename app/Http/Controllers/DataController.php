@@ -25,6 +25,7 @@ class DataController extends Controller
 
 
     public function reloadData(){
+
         $this->deleteData();
         $response = $this->loadData();
         if ($response && $response->successful()) {

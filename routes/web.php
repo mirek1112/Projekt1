@@ -18,5 +18,6 @@ Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/hobbies', [HobbyController::class, 'index']);
 
 Route::post('/users', [UserController::class, 'store']);
+Route::post('/deleteItems', [UserController::class, 'delete']);
 
 require __DIR__.'/auth.php';

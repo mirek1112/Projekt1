@@ -36,4 +36,23 @@ class UserController extends Controller
 
     }
 
+    public function delete (Request $request){
+
+        $ids = $request->input('ids');
+
+        if (!empty($ids)) {
+            Zaznamy::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'message' => 'Items deleted successfully',
+                'deletedIds' => $ids
+            ]);
+        }
+
+        return response()->json([
+         'message' => 'error'
+        ]);
+
+    }
+
 }

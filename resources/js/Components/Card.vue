@@ -4,31 +4,30 @@
       @click="toggleSelection(item.id, $event)"
     >
       <h2
-        :class="{ highlighted: isElementSelected(item.id, 'title') }"
-        @click.stop="toggleElementSelection(item.id, 'title')"
+
       >
         {{ item.jmeno }} {{ item.prijmeni }}
       </h2>
       <p
-        :class="{ highlighted: isElementSelected(item.id, 'birth_date') }"
-        @click.stop="toggleElementSelection(item.id, 'birth_date')"
+
       >
         Birth Date: {{ item.datum }}
       </p>
       <p
-        :class="{ highlighted: isElementSelected(item.id, 'country') }"
-        @click.stop="toggleElementSelection(item.id, 'country')"
+
       >
         Country: {{ item.country.name }}
       </p>
 
-      <h3 class="card-subtitle">Hobbies:</h3>
-      <ul class="card-list">
+      <h3  class="card-subtitle">Hobbies:</h3>
+      <ul class="card-list" >
         <li
-          v-for="(hobby, index) in item.hobbies"
+          v-for="hobby in item.hobbies"
           :key="hobby.id"
-          :class="{ highlighted: isElementSelected(item.id, `hobby-${hobby.id}`) }"
-          @click.stop="toggleElementSelection(item.id, `hobby-${hobby.id}`)"
+          :class="{
+            'highlighted': selectedHobbies[hobby.name],
+            'card-hobby': true
+          }"
         >
           {{ hobby.name }}
         </li>
@@ -37,41 +36,52 @@
   </template>
 
   <script setup>
- import { reactive } from 'vue';
+   import { reactive } from 'vue';
 
   const props = defineProps({
     item: {
       type: Object,
       required: true,
-    }
+    },
+    selectedHobbies: {
+      type: Object,
+      required: true,
+    },
+    isSelected: {
+    type: Boolean,
+    required: true,
+  },
 
   });
 
+  const emit = defineEmits(['toggleSelection']);
 
+  const isSelected = (id) => selectedItems[id];
   const selectedItems = reactive({});
-  const selectedElements = reactive({});
+
+
   const toggleSelection = (id, event) => {
-    if (event.target === event.currentTarget) {
+    emit('toggleSelection');
+
       if (selectedItems[id]) {
         delete selectedItems[id];
       } else {
         selectedItems[id] = true;
       }
-    }
   };
 
-  const toggleElementSelection = (id, element) => {
-    if (!selectedElements[id]) {
-      selectedElements[id] = {};
-    }
-    selectedElements[id][element] = !selectedElements[id][element];
-  };
-
-  const isSelected = (id) => selectedItems[id];
-  const isElementSelected = (id, element) => selectedElements[id]?.[element] || false;
   </script>
 
   <style scoped>
+  .card-hobby {
+  margin: 4px 0;
+}
+
+.card-hobby.highlighted {
+  background-color: yellow;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
   .card {
     flex: 1 1 calc(33.33% - 16px);
     box-sizing: border-box;
